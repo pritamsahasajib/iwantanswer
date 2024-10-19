@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yes or No Question</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-image: url('https://assets.onecompiler.app/42vjz8drr/42vjzanet/rsz_2leo_visions-hqukno6qo9q-unsplash.jpg'); /* Add your background image here */
+            background-size: cover; /* Cover the entire area */
+            background-repeat: no-repeat; /* Prevent repeating */
+            background-position: center; /* Center the image */
+            color: white; /* Change text color for better contrast */
+        }
+        #noBtn {
+            position: absolute;
+            transition: all 0.2s ease;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(0, 123, 255, 0.8); /* Semi-transparent button */
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: rgba(0, 86, 179, 0.8); /* Semi-transparent hover color */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Do you love me?</h1>
+
+    <!-- Yes and No Buttons -->
+    <button id="yesBtn" class="btn" onclick="submitAnswer('Yes')">Yes</button>
+    <button id="noBtn" class="btn" onmouseover="moveButton()" aria-label="No">No</button>
+
+    <p id="answer"></p>
+
+    <script>
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20) + 10; // +10 for padding
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20) + 10; // +10 for padding
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        function submitAnswer(answer) {
+            document.getElementById('answer').textContent = `You clicked: ${answer}`;
+            showPopup(answer); // Show popup message
+        }
+
+        function showPopup(answer) {
+            alert(`Your answer "${answer}" submitted successfully to the host Pritam.`);
+        }
+
+        function sendAnswerToServer(answer) {
+            fetch('/submit-answer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ answer: answer }),
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                console.log('Success:', data);
+            }).catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+
+</body>
+</html>
